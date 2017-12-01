@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using AzureQnaService;
 
-namespace AzureFaqQnaWpf
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+
+namespace AzureFaqQnaUwp
 {
     /// <summary>
-    ///     Interaction logic for MainWindow.xaml
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public partial class MainWindow : Window
+    public sealed partial class MainPage : Page
     {
         #region Fields
 
@@ -18,18 +21,19 @@ namespace AzureFaqQnaWpf
 
         #endregion
 
-        public MainWindow()
+        public MainPage()
         {
             InitializeComponent();
             _client = new AzureFaqQuestion();
-            Loaded += (sender, args) => VisualStateManager.GoToElementState(RootGrid, nameof(ReadyToAsk), false);
+            Loaded += (sender, args) => VisualStateManager.GoToState(this, nameof(ReadyToAsk), false);
         }
+
 
         private async void AskQuestion_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                VisualStateManager.GoToElementState(RootGrid, nameof(Asking), true);
+                VisualStateManager.GoToState(this, nameof(Asking), true);
 
                 await GetOneAnswer();
                 // await Get3Answers();
@@ -47,7 +51,7 @@ namespace AzureFaqQnaWpf
             }
             finally
             {
-                VisualStateManager.GoToElementState(RootGrid, nameof(ReadyToAsk), true);
+                VisualStateManager.GoToState(this, nameof(ReadyToAsk), true);
             }
         }
 
